@@ -44,6 +44,10 @@ jobs:
         fi
     - name: Deploy website
       env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
+        GITHUB_TOKEN: ${{ secrets.PAT }}
+      uses: actions/setup-git@v2
+      with:
+        git_user_email: 'github-actions[bot]@users.noreply.github.com'
+        git_user_name: 'GitHub Action'
       run: |
-        git push https://x-access-token:$GITHUB_TOKEN@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
+        git push https://github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
