@@ -1,4 +1,5 @@
 name: deploy
+
 on:
   push:
     branches:
@@ -20,8 +21,9 @@ jobs:
       with:
         ruby-version: '3.0.2'
         bundler-cache: true
-    - name: Install dependencies
-      run: bundle install
+    - name: Install deps
+      run: |
+        npm install -g mermaid.cli
     - name: Setup deploy options
       id: setup
       run: |
@@ -36,9 +38,9 @@ jobs:
         echo "DEPLOY_BRANCH=gh-pages" >> $GITHUB_ENV
     - name: Fix permission
       run: |
-#        chmod a+x bin/*
+        chmod a+x bin/*
         git add bin/*
-        git commit -m "add execute permission to bin/deploy"
+        git diff-index --quiet HEAD || git commit -m "add execute permission to bin/deploy"
     - name: Deploy website 
       run:  yes | bash bin/deploy --verbose ${{ steps.setup.outputs.NO_PUSH }}
                     --src ${{ steps.setup.outputs.SRC_BRANCH }} 
