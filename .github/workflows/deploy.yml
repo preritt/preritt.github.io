@@ -1,4 +1,4 @@
-name: Deploy
+name: deploy
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
       with:
         ruby-version: '3.0.2'
         bundler-cache: true
-    - name: Install dependencies
+    - name: Install deps
       run: |
         npm install -g mermaid.cli
     - name: Setup deploy options
@@ -39,4 +39,11 @@ jobs:
     - name: Fix permission
       run: |
         chmod a+x bin/*
-        if git status | grep -q "modified:.*bin/deploy
+        if git status | grep -q "modified:.*bin/deploy"; then
+          git commit -am "add execute permission to bin/deploy"
+        fi
+    - name: Deploy website
+      env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+      run: |
+        git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
