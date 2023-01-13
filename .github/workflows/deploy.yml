@@ -37,7 +37,7 @@ jobs:
         fi
         echo "DEPLOY_BRANCH=gh-pages" >>
     - name: Fix permission
-      if: success(steps.checkout)
+      if: success(steps.checkout.outputs.success)
       run: |
         chmod a+x bin/*
         git add bin/*
