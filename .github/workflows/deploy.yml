@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - master
-      - main
   pull_request:
     branches:
       - master
-      - main
 
 jobs:
   deploy:
@@ -30,22 +28,19 @@ jobs:
         git config --global user.name "GitHub Action"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         if [[ ${GITHUB_REF} = refs/pull/*/merge ]]; then # pull request
-          echo "SRC_BRANCH=${GITHUB_HEAD_REF}" >> $GITHUB_OUTPUT
-          echo "NO_PUSH=--no-push" >> $GITHUB_OUTPUT
+          echo "SRC_BRANCH=${GITHUB_HEAD_REF}" >> $GITHUB_ENV
+          echo "NO_PUSH=--no-push" >> $GITHUB_ENV
         elif [[ ${GITHUB_REF} = refs/heads/* ]]; then # branch, e.g. master, source etc
-          echo "SRC_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+          echo "SRC_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
         fi
-        echo "DEPLOY_BRANCH=gh-pages" >> $GITHUB_OUTPUT
+        echo "DEPLOY_BRANCH=gh-pages" >> $GITHUB_ENV
     - name: Fix permission
       run: |
         chmod a+x bin/*
-        if git status | grep -q "modified:.*bin/deploy"; then
-          git commit -am "add execute permission to bin/deploy"
-        fi
+        git add bin/*
+        git diff-index --quiet HEAD || git commit -m "add execute permission to bin/deploy"
     - name: Deploy website
       env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
       run: |
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
-#        git push https://oauth-token:${{ secrets.GITHUB_TOKEN }}@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
-#        git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
+        git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
