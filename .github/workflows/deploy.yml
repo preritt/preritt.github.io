@@ -44,7 +44,7 @@ jobs:
         fi
     - name: Deploy website
       env:
-          PERSONAL_WEB_TOKEN: ${{ secrets.PERSONAL_WEB_TOKEN }}
-      run: yes | bash bin/deploy --verbose ${{ steps.setup.outputs.NO_PUSH }}
-          --src ${{ steps.setup.outputs.SRC_BRANCH }}
-          --deploy ${{ steps.setup.outputs.DEPLOY_BRANCH }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+      run: |
+        git push https://x-access-token:$GITHUB_TOKEN@github.com/preritt/ preritt.github.io
+.git $DEPLOY_BRANCH
