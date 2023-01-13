@@ -43,11 +43,10 @@ jobs:
           git commit -am "add execute permission to bin/deploy"
         fi
     - name: Deploy website
+      uses: actions/github-script@v3
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
-      uses: actions/setup-git@v2
       with:
-        git_user_email: 'github-actions[bot]@users.noreply.github.com'
-        git_user_name: 'GitHub Action'
-      run: |
-        git push https://github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
+        script: |
+          const { execSync } = require("child_process");
+          execSync(`git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH`);
