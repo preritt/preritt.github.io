@@ -46,5 +46,6 @@ jobs:
       env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
       run: |
-        git push https://oauth-token:${{ secrets.GITHUB_TOKEN }}@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
+#        git push https://oauth-token:${{ secrets.GITHUB_TOKEN }}@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
 #        git push https://$GITHUB_TOKEN:x-oauth-basic@github.com/preritt/preritt.github.io.git $DEPLOY_BRANCH
