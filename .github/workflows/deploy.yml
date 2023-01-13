@@ -36,7 +36,7 @@ jobs:
         echo "DEPLOY_BRANCH=gh-pages" >> $GITHUB_ENV
     - name: Fix permission
       run: |
-        chmod a+x bin/*
+#        chmod a+x bin/*
         git add bin/*
         git commit -m "add execute permission to bin/deploy"
     - name: Deploy website 
