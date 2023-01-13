@@ -39,6 +39,7 @@ jobs:
     - name: Fix permission
       run: |
         chmod a+x bin/*
-        git commit -am "add execute permission to bin/deploy"
+        if git status | grep -q "modified:.*bin/deploy"; then
+          git commit -am "add execute permission to bin/deploy"
     - name: Deploy website
       run:  yes | bash bin/deploy --verbose ${{ steps.setup.outputs.NO_PUSH }} --src ${{ steps.setup.outputs.SRC_BRANCH }} --deploy ${{ steps.setup.outputs.DEPLOY_BRANCH }}
