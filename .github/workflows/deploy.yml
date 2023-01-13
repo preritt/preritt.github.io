@@ -43,4 +43,8 @@ jobs:
           git commit -am "add execute permission to bin/deploy"
         fi
     - name: Deploy website
-      run:  yes | bash bin/deploy --verbose ${{ steps.setup.outputs.NO_PUSH }} --src ${{ steps.setup.outputs.SRC_BRANCH }} --deploy ${{ steps.setup.outputs.DEPLOY_BRANCH }}
+      env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_WEB_TOKEN }}
+      run: yes | bash bin/deploy --verbose ${{ steps.setup.outputs.NO_PUSH }}
+          --src ${{ steps.setup.outputs.SRC_BRANCH }}
+          --deploy ${{ steps.setup.outputs.DEPLOY_BRANCH }}
